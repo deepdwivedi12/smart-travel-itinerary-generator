@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Generate personalized travel itineraries with our smart AI-powered tool">
+    <title>Smart Travel Itinerary Generator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Smart Travel Itinerary Generator</h1>
+            <p class="hero-subtitle">Create personalized travel plans tailored to your preferences, budget, and schedule</p>
+            <div class="hero-features">
+                <div class="hero-feature">
+                    <span class="feature-icon">📅</span>
+                    <span class="feature-text">Personalized day-wise itineraries</span>
+                </div>
+                <div class="hero-feature">
+                    <span class="feature-icon">💰</span>
+                    <span class="feature-text">Budget-aware travel planning</span>
+                </div>
+                <div class="hero-feature">
+                    <span class="feature-icon">✉️</span>
+                    <span class="feature-text">Delivered directly to your email</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Form Section -->
+    <main class="main-container">
+        <div class="form-card">
+            <form id="itineraryForm" class="itinerary-form" novalidate>
+                <!-- Destination Field -->
+                <div class="form-group">
+                    <label for="destination" class="form-label">
+                        Destination
+                        <span class="required-indicator">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="destination" 
+                        name="destination" 
+                        class="form-input" 
+                        placeholder="e.g., Paris, France"
+                        required
+                        autocomplete="off"
+                    >
+                    <span class="error-message" id="destination-error" aria-live="polite"></span>
+                </div>
+
+                <!-- Number of Days Field -->
+                <div class="form-group">
+                    <label for="days" class="form-label">
+                        Number of Days
+                        <span class="required-indicator">*</span>
+                    </label>
+                    <input 
+                        type="number" 
+                        id="days" 
+                        name="days" 
+                        class="form-input" 
+                        placeholder="e.g., 5"
+                        min="1"
+                        required
+                    >
+                    <span class="error-message" id="days-error" aria-live="polite"></span>
+                </div>
+
+                <!-- Budget Field -->
+                <div class="form-group">
+                    <label for="budget" class="form-label">
+                        Budget (in your currency)
+                        <span class="required-indicator">*</span>
+                    </label>
+                    <input 
+                        type="number" 
+                        id="budget" 
+                        name="budget" 
+                        class="form-input" 
+                        placeholder="e.g., 5000"
+                        min="1"
+                        step="0.01"
+                        required
+                    >
+                    <span class="error-message" id="budget-error" aria-live="polite"></span>
+                </div>
+
+                <!-- Mode of Travel Field -->
+                <div class="form-group">
+                    <label for="travelMode" class="form-label">
+                        Mode of Travel
+                        <span class="required-indicator">*</span>
+                    </label>
+                    <div class="select-wrapper">
+                        <select 
+                            id="travelMode" 
+                            name="travelMode" 
+                            class="form-input form-select"
+                            required
+                        >
+                            <option value="">Select travel mode</option>
+                            <option value="Bus">Bus</option>
+                            <option value="Train">Train</option>
+                            <option value="Flight">Flight</option>
+                            <option value="Car">Car</option>
+                        </select>
+                        <span class="select-arrow"></span>
+                    </div>
+                    <span class="error-message" id="travelMode-error" aria-live="polite"></span>
+                </div>
+
+                <!-- Number of Travelers Field -->
+                <div class="form-group">
+                    <label for="travelers" class="form-label">
+                        Number of Travelers
+                        <span class="required-indicator">*</span>
+                    </label>
+                    <input 
+                        type="number" 
+                        id="travelers" 
+                        name="travelers" 
+                        class="form-input" 
+                        placeholder="e.g., 2"
+                        min="1"
+                        required
+                    >
+                    <span class="error-message" id="travelers-error" aria-live="polite"></span>
+                </div>
+
+                <!-- Email Field -->
+                <div class="form-group">
+                    <label for="email" class="form-label">
+                        Email Address
+                        <span class="required-indicator">*</span>
+                    </label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-input" 
+                        placeholder="your.email@example.com"
+                        required
+                        autocomplete="email"
+                    >
+                    <span class="error-message" id="email-error" aria-live="polite"></span>
+                </div>
+
+                <!-- Additional Preferences Field -->
+                <div class="form-group">
+                    <label for="preferences" class="form-label">
+                        Additional Preferences
+                        <span class="optional-indicator">(Optional)</span>
+                    </label>
+                    <textarea 
+                        id="preferences" 
+                        name="preferences" 
+                        class="form-input form-textarea" 
+                        placeholder="Any specific requirements? e.g., vegetarian meals, accessibility needs, must-see attractions..."
+                        rows="4"
+                    ></textarea>
+                </div>
+                <!-- Submit Button -->
+                <div class="form-group form-group-submit">
+
+                    <!-- Helper Text (PASTE THIS) -->
+                    <p class="helper-text">
+                      Your personalized travel itinerary will be generated using AI
+                      and sent directly to your email within moments.
+                    </p>
+                  
+                    <!-- Submit Button -->
+                    <button type="submit" class="submit-button" id="submitButton">
+                      <span class="button-text">Generate Itinerary</span>
+                      <span class="button-loader" id="buttonLoader" aria-hidden="true">
+                        <span class="spinner"></span>
+                        <span class="loading-text">Generating your itinerary...</span>
+                      </span>
+                    </button>
+                  
+                  </div>
+                  
+
+                <!-- Success/Error Messages -->
+                <div class="form-message" id="formMessage" role="alert" aria-live="polite"></div>
+            </form>
+        </div>
+    </main>
+
+    <footer class="page-footer">
+        <p class="footer-text">Smart Travel Itinerary Generator · Academic certification project</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
