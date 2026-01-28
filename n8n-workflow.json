@@ -1,0 +1,278 @@
+{
+  "name": "Smart Travel Itinerary Generator",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "travel-itinerary",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -112,
+        -128
+      ],
+      "id": "2ad5defc-03b4-4f5e-bd1f-3c9db5eaab5d",
+      "name": "Webhook",
+      "webhookId": "bad5d66d-66a7-452d-ae9e-2b6e8ecdcc9f"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1pROj8CZeJgr3H-tZc2OIFejY1S_1pu2rOjMN7A8Dt4A",
+          "mode": "list",
+          "cachedResultName": "Travel Itinerary Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1pROj8CZeJgr3H-tZc2OIFejY1S_1pu2rOjMN7A8Dt4A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1pROj8CZeJgr3H-tZc2OIFejY1S_1pu2rOjMN7A8Dt4A/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "destination ": "={{ $json.body.destination }}",
+            "days": "={{$json.body.days}}",
+            "budget": "={{$json.body.budget}}",
+            "travel_mode": "={{$json.body.travelMode}}",
+            "email": "={{$json.body.email}}",
+            "preferences": "={{$json.body.preferences}}",
+            "timestamp": "={{$now}}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "destination ",
+              "displayName": "destination ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "days",
+              "displayName": "days",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "budget",
+              "displayName": "budget",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "travel_mode",
+              "displayName": "travel_mode",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "preferences",
+              "displayName": "preferences",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "136cf308-ae91-45eb-878f-eec464621368",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "odwWtthglo4fU8rs",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"success\": true,\n  \"message\": \"Itinerary generated and email sent successfully\"\n}\n",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        992,
+        144
+      ],
+      "id": "5729afc1-d1f7-4265-a323-1dae35d1504a",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=You are a professional travel planning assistant.\n\nGenerate a personalized, day-wise travel itinerary based on the user's input.\nThe itinerary should be clear, structured, and easy to read.\nKeep the tone professional and friendly.\n\nUser details:\nDestination: {{$json.destination}}\nNumber of Days: {{$json.days}}\nBudget: {{$json.budget}}\nTravel Mode: {{$json.travelMode}}\nAdditional Preferences: {{$json.preferences}}\n\nEnd with a short friendly note wishing the user a happy journey.\n\nIMPORTANT:\nAlso return the user's email exactly as received.\nOutput must be plain readable text only.\n"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {
+          "temperature": 0.3
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        448,
+        144
+      ],
+      "id": "843f4561-0ef1-4e47-9ced-b7d2c40f813a",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "xqBzGOOV5jTrTYFX",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "=deepdwivedi1164@gmail.com\n",
+        "subject": "Your Personalized Travel Itinerary ✈️",
+        "message": "={{ $json.output[0].content[0].text }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        800,
+        144
+      ],
+      "id": "01c55f86-9c5d-4bea-8469-6a29312cdc1c",
+      "name": "Send a message",
+      "webhookId": "c59341f5-808c-402b-a658-920b009786d1",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "TjAnPhOPlqtFWAbW",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "ca4f8688-d060-4396-aff2-a0b687f402e6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "24cab38c7653fb3f3baa88075536274afb59f8711d9a287e4a0d7e6bd188d174"
+  },
+  "id": "_oizMGOg8Pqdrw6phYugZ",
+  "tags": []
+}
